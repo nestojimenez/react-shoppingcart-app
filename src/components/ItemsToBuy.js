@@ -31,6 +31,34 @@ const ItemsToBuy = () =>{
                        
         }
 
+        const fetchGraphQl = () =>{
+            const query = `
+            query {
+                productosToStarts {              
+                    data {
+                        attributes {                  
+                            name              
+                        }              
+                    }               
+                }              
+            }
+            `
+            fetch("http://localhost:1337/graphql", {
+                method: "POST",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Accept":"application/json",
+                },
+                body: JSON.stringify({
+                    query
+                })
+            }).then(response=>{
+                return response.json()
+            }).then(data=>{
+                console.log(data);
+            })
+        }
+
         const findItemIndex = (e) =>{
             return itemsToBuy.find(item => item.attributes.name == e.target.name)
         }
@@ -59,7 +87,8 @@ const ItemsToBuy = () =>{
 
         useEffect(()=>{
         //fetchData();
-            setItemsToBuy(myItems.data)
+            //setItemsToBuy(myItems.data)
+            fetchGraphQl();
         }, [])
 
     const image = 'https://picsum.photos/'
